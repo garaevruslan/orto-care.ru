@@ -2150,46 +2150,6 @@
 </div>
 
 
-<script>
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const tabPanels = document.querySelectorAll('.tab-panel');
-
-  function activateTab(target) {
-    tabBtns.forEach(b => b.classList.remove('active'));
-    tabPanels.forEach(p => {
-      p.classList.remove('active');
-      p.style.animation = '';
-    });
-
-    const activeBtn = document.querySelector('.tab-btn[data-tab="' + target + '"]');
-    const activePanel = document.getElementById('tab-' + target);
-
-    if (activeBtn) activeBtn.classList.add('active');
-    if (activePanel) {
-      activePanel.classList.add('active');
-      activePanel.style.animation = 'fadeIn 0.25s ease';
-    }
-
-    // Scroll to just below the sticky nav
-    const nav = document.querySelector('.tab-nav');
-    const navBottom = nav.getBoundingClientRect().bottom + window.scrollY;
-    if (window.scrollY > navBottom) {
-      window.scrollTo({ top: nav.offsetTop, behavior: 'smooth' });
-    }
-  }
-
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => activateTab(btn.dataset.tab));
-  });
-
-  // Keyboard navigation
-  document.querySelector('.tab-nav-inner').addEventListener('keydown', (e) => {
-    const btns = [...tabBtns];
-    const idx = btns.indexOf(document.activeElement);
-    if (e.key === 'ArrowRight' && idx < btns.length - 1) btns[idx + 1].focus();
-    if (e.key === 'ArrowLeft' && idx > 0) btns[idx - 1].focus();
-    if (e.key === 'Enter' || e.key === ' ') activateTab(document.activeElement.dataset.tab);
-  });
-</script>
+<script src="orto-care-tabs.js" defer></script>
 </body>
 </html>
