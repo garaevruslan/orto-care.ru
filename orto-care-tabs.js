@@ -70,6 +70,36 @@
     });
   }
 
+  // ── Scroll-fade hint for horizontal scroll wrappers ──
+  function initScrollWrappers() {
+    document.querySelectorAll('.scroll-wrapper').forEach(wrapper => {
+      const scrollId = wrapper.dataset.scrollId;
+      const container = scrollId ? document.getElementById(scrollId) : wrapper.querySelector('.scroll-container');
+      if (!container) return;
+
+      function checkScroll() {
+        const atEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 4;
+        wrapper.classList.toggle('scrolled-end', atEnd);
+      }
+
+      container.addEventListener('scroll', checkScroll, { passive: true });
+      // Run once on init and after tab switch (content may not be rendered yet)
+      setTimeout(checkScroll, 50);
+    });
+  }
+
+  // Re-init on each tab switch
+  const _origActivate = window.ortoCareActivateTab;
+  window.ortoCareActivateTab = function(target) {
+    _origActivate(target);
+    setTimeout(initScrollWrappers, 80);
+  };
+
+  // Init on load
+  document.addEventListener('DOMContentLoaded', initScrollWrappers);
+  // Fallback if DOMContentLoaded already fired
+  if (document.readyState !== 'loading') initScrollWrappers();
+
   // Expose activateTab globally for potential external use
   window.ortoCareActivateTab = activateTab;
 
