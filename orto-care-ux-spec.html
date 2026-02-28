@@ -4,637 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Orto-Care — UX Specification Document</title>
-<style>
-  :root {
-    --primary: #0A1628;
-    --accent: #1B6EF3;
-    --accent-light: #E8F0FE;
-    --success: #0D9C6E;
-    --success-light: #E6F6F1;
-    --warning: #E8840F;
-    --warning-light: #FEF3E2;
-    --danger: #D63B3B;
-    --danger-light: #FDECEC;
-    --neutral: #F4F6FA;
-    --border: #E2E8F0;
-    --text: #1A202C;
-    --text-muted: #64748B;
-    --white: #FFFFFF;
-    --gradient: linear-gradient(135deg, #0A1628 0%, #1B3A6B 100%);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: #F0F4F8;
-    color: var(--text);
-    line-height: 1.6;
-  }
-
-  /* HEADER */
-  .doc-header {
-    background: var(--gradient);
-    color: white;
-    padding: 56px 48px 48px;
-    position: relative;
-    overflow: hidden;
-  }
-  .doc-header::before {
-    content: '';
-    position: absolute;
-    right: -80px; top: -80px;
-    width: 400px; height: 400px;
-    border-radius: 50%;
-    background: rgba(27, 110, 243, 0.15);
-  }
-  .doc-header::after {
-    content: '';
-    position: absolute;
-    right: 100px; bottom: -100px;
-    width: 250px; height: 250px;
-    border-radius: 50%;
-    background: rgba(27, 110, 243, 0.1);
-  }
-  .header-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.25);
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-  .header-badge::before { content: '◉'; color: #4AFEA4; font-size: 10px; }
-  .doc-header h1 { font-size: 40px; font-weight: 800; margin-bottom: 8px; position: relative; z-index: 1; }
-  .doc-header h1 span { color: #4AFEA4; }
-  .doc-header p { font-size: 16px; opacity: 0.75; max-width: 600px; margin-bottom: 28px; position: relative; z-index: 1; }
-  .header-meta {
-    display: flex;
-    gap: 32px;
-    position: relative;
-    z-index: 1;
-  }
-  .meta-item { font-size: 13px; opacity: 0.6; }
-  .meta-item strong { display: block; font-size: 15px; opacity: 1; color: white; }
-
-  /* TAB NAVIGATION */
-  .tab-nav {
-    background: white;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  }
-  .tab-nav-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 48px;
-    display: flex;
-    gap: 0;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .tab-nav-inner::-webkit-scrollbar { display: none; }
-  .tab-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 15px 18px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-muted);
-    background: none;
-    border: none;
-    border-bottom: 3px solid transparent;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: inherit;
-  }
-  .tab-btn:hover { color: var(--accent); border-bottom-color: rgba(27,110,243,0.3); }
-  .tab-btn.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-    background: linear-gradient(to bottom, transparent, rgba(27,110,243,0.04));
-  }
-
-  /* TAB PANELS */
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
-
-  /* LAYOUT */
-  .container { max-width: 1200px; margin: 0 auto; padding: 48px; }
-
-  /* SECTIONS */
-  .section {
-    background: white;
-    border-radius: 16px;
-    border: 1px solid var(--border);
-    padding: 40px;
-    margin-bottom: 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  }
-  .section-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--border);
-  }
-  .section-icon {
-    width: 48px; height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
-  }
-  .section-icon.blue { background: var(--accent-light); }
-  .section-icon.green { background: var(--success-light); }
-  .section-icon.orange { background: var(--warning-light); }
-  .section-icon.red { background: var(--danger-light); }
-  .section-icon.purple { background: #F3E8FF; }
-  .section-title { font-size: 24px; font-weight: 700; color: var(--primary); }
-  .section-subtitle { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
-
-  /* PERSONAS */
-  .persona-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  .persona-card {
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    overflow: hidden;
-  }
-  .persona-header {
-    padding: 20px;
-    color: white;
-    position: relative;
-  }
-  .persona-header.sport { background: linear-gradient(135deg, #1B6EF3, #0A1628); }
-  .persona-header.comfort { background: linear-gradient(135deg, #0D9C6E, #064E3B); }
-  .persona-header.medical { background: linear-gradient(135deg, #7C3AED, #2D1B69); }
-  .persona-avatar {
-    width: 52px; height: 52px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    margin-bottom: 12px;
-    border: 2px solid rgba(255,255,255,0.3);
-  }
-  .persona-name { font-size: 18px; font-weight: 700; }
-  .persona-role { font-size: 12px; opacity: 0.75; margin-top: 2px; }
-  .persona-tag {
-    position: absolute;
-    top: 16px; right: 16px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 8px;
-    padding: 4px 10px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
-  .persona-body { padding: 20px; }
-  .persona-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  .stat-item { background: var(--neutral); border-radius: 8px; padding: 10px 12px; }
-  .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
-  .stat-value { font-size: 14px; font-weight: 600; margin-top: 2px; }
-  .persona-section { margin-bottom: 14px; }
-  .persona-section h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); font-weight: 700; margin-bottom: 8px; }
-  .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
-  .tag { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
-  .tag.goal { background: var(--success-light); color: #065F46; }
-  .tag.pain { background: var(--danger-light); color: #991B1B; }
-  .tag.behavior { background: var(--accent-light); color: #1E40AF; }
-  .persona-quote {
-    background: var(--neutral);
-    border-left: 3px solid var(--accent);
-    padding: 12px 14px;
-    font-size: 13px;
-    font-style: italic;
-    color: var(--text-muted);
-    border-radius: 0 8px 8px 0;
-    margin-top: 12px;
-  }
-
-  /* JOURNEY MAP */
-  .journey-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
-  .journey-table th {
-    background: var(--primary);
-    color: white;
-    padding: 12px 16px;
-    text-align: left;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
-  .journey-table th:first-child { border-radius: 8px 0 0 0; }
-  .journey-table th:last-child { border-radius: 0 8px 0 0; }
-  .journey-table td {
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-    vertical-align: top;
-  }
-  .journey-table tr:last-child td { border-bottom: none; }
-  .journey-table tr:hover td { background: var(--neutral); }
-  .stage-badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 700;
-    white-space: nowrap;
-  }
-  .emotion-bar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-  }
-  .emotion-dots { display: flex; gap: 3px; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; }
-  .dot.filled.high { background: var(--success); }
-  .dot.filled.mid { background: var(--warning); }
-  .dot.filled.low { background: var(--danger); }
-  .dot.empty { background: var(--border); }
-  .action-list { list-style: none; }
-  .action-list li { padding: 2px 0; font-size: 12px; color: var(--text-muted); }
-  .action-list li::before { content: '→ '; color: var(--accent); }
-
-  /* INFORMATION ARCHITECTURE */
-  .ia-blocks {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  .ia-block {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .ia-block-header {
-    padding: 14px 16px;
-    font-size: 13px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .block-num {
-    width: 24px; height: 24px;
-    border-radius: 50%;
-    background: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 800;
-    flex-shrink: 0;
-  }
-  .ia-block-body { padding: 16px; }
-  .ia-item {
-    padding: 10px 12px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    font-size: 13px;
-    border: 1px solid var(--border);
-    background: var(--neutral);
-  }
-  .ia-item:last-child { margin-bottom: 0; }
-  .ia-item strong { display: block; font-weight: 600; }
-  .ia-item span { font-size: 11px; color: var(--text-muted); }
-  .ia-block:nth-child(1) .ia-block-header { background: linear-gradient(135deg, #1B6EF3, #1558C8); color: white; }
-  .ia-block:nth-child(1) .block-num { color: #1B6EF3; }
-  .ia-block:nth-child(2) .ia-block-header { background: linear-gradient(135deg, #0D9C6E, #065F46); color: white; }
-  .ia-block:nth-child(2) .block-num { color: #0D9C6E; }
-  .ia-block:nth-child(3) .ia-block-header { background: linear-gradient(135deg, #7C3AED, #5B21B6); color: white; }
-  .ia-block:nth-child(3) .block-num { color: #7C3AED; }
-
-  /* WIREFRAME ANNOTATIONS */
-  .wireframe-section { margin-bottom: 40px; }
-  .wireframe-label {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-  .block-badge {
-    background: var(--primary);
-    color: white;
-    padding: 4px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-  }
-  .wireframe-title { font-size: 16px; font-weight: 700; }
-  .wireframe-box {
-    border: 2px dashed var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    background: var(--neutral);
-    position: relative;
-  }
-  .wf-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 12px;
-    align-items: stretch;
-  }
-  .wf-row:last-child { margin-bottom: 0; }
-  .wf-element {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 16px;
-    font-size: 12px;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    min-height: 44px;
-    position: relative;
-  }
-  .wf-element.accent-bg { background: var(--accent); color: white; border-color: var(--accent); font-weight: 600; }
-  .wf-element.heading { font-size: 15px; font-weight: 700; color: var(--primary); }
-  .wf-element.image { background: linear-gradient(135deg, #E2E8F0, #CBD5E0); height: 120px; }
-  .wf-element.full { flex: 1; }
-  .wf-element.half { flex: 0 0 calc(50% - 6px); }
-  .wf-element.third { flex: 0 0 calc(33.33% - 8px); }
-  .wf-element.quarter { flex: 0 0 calc(25% - 9px); }
-  .wf-element.icon-img { height: 60px; }
-  .annotation-list { margin-top: 16px; }
-  .annotation {
-    display: flex;
-    gap: 10px;
-    padding: 10px 14px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    font-size: 13px;
-    align-items: flex-start;
-  }
-  .annotation.critical { background: var(--danger-light); border-left: 3px solid var(--danger); }
-  .annotation.high { background: var(--warning-light); border-left: 3px solid var(--warning); }
-  .annotation.insight { background: var(--accent-light); border-left: 3px solid var(--accent); }
-  .annotation.good { background: var(--success-light); border-left: 3px solid var(--success); }
-  .ann-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-  .ann-text strong { font-weight: 600; display: block; }
-
-  /* MICROCOPY */
-  .copy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .copy-card {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .copy-card-header {
-    padding: 12px 16px;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    background: var(--neutral);
-    border-bottom: 1px solid var(--border);
-    color: var(--text-muted);
-  }
-  .copy-item { padding: 14px 16px; border-bottom: 1px solid var(--border); }
-  .copy-item:last-child { border-bottom: none; }
-  .copy-label { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; }
-  .copy-before { font-size: 13px; color: var(--danger); text-decoration: line-through; margin-bottom: 6px; padding: 6px 10px; background: var(--danger-light); border-radius: 6px; }
-  .copy-after { font-size: 13px; color: var(--success); font-weight: 600; padding: 6px 10px; background: var(--success-light); border-radius: 6px; }
-  .copy-reason { font-size: 11px; color: var(--text-muted); margin-top: 6px; font-style: italic; }
-
-  /* UX INSIGHTS */
-  .insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .insight-card {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-  }
-  .insight-num {
-    width: 32px; height: 32px;
-    background: var(--primary);
-    color: white;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: 800;
-    margin-bottom: 12px;
-  }
-  .insight-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
-  .insight-problem { font-size: 12px; color: var(--danger); background: var(--danger-light); padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; }
-  .insight-problem strong { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
-  .insight-solution { font-size: 12px; color: #065F46; background: var(--success-light); padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; }
-  .insight-solution strong { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
-  .insight-action { font-size: 12px; color: #1E40AF; background: var(--accent-light); padding: 8px 12px; border-radius: 6px; }
-  .insight-action strong { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
-
-  /* ACCESSIBILITY */
-  .a11y-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-  .a11y-card {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    text-align: center;
-  }
-  .a11y-icon { font-size: 28px; margin-bottom: 8px; }
-  .a11y-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
-  .a11y-text { font-size: 11px; color: var(--text-muted); }
-  .a11y-status {
-    display: inline-block;
-    margin-top: 8px;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-  .a11y-status.req { background: var(--danger-light); color: var(--danger); }
-  .a11y-status.rec { background: var(--warning-light); color: var(--warning); }
-
-  /* METRICS */
-  .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .metric-card {
-    background: var(--neutral);
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid var(--border);
-  }
-  .metric-value { font-size: 32px; font-weight: 800; color: var(--accent); }
-  .metric-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
-  .metric-context { font-size: 11px; color: var(--text-muted); margin-top: 6px; border-top: 1px solid var(--border); padding-top: 6px; }
-
-  /* CTA FLOW */
-  .cta-flow {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    background: var(--neutral);
-    border-radius: 12px;
-    padding: 24px;
-    overflow-x: auto;
-  }
-  .cta-step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 140px;
-    text-align: center;
-  }
-  .cta-circle {
-    width: 52px; height: 52px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    margin-bottom: 10px;
-    border: 2px solid var(--border);
-  }
-  .cta-circle.active { background: var(--accent); border-color: var(--accent); }
-  .cta-label { font-size: 12px; font-weight: 600; color: var(--text); }
-  .cta-sublabel { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-  .cta-arrow {
-    font-size: 20px;
-    color: var(--text-muted);
-    padding: 0 8px;
-    flex-shrink: 0;
-  }
-  .cta-highlight { background: var(--accent-light); }
-
-  /* PRIORITY TABLE */
-  .priority-table { width: 100%; border-collapse: collapse; }
-  .priority-table th { background: var(--neutral); padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); border-bottom: 2px solid var(--border); }
-  .priority-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
-  .priority-table tr:last-child td { border-bottom: none; }
-  .priority-badge { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; }
-  .p-critical { background: var(--danger-light); color: var(--danger); }
-  .p-high { background: var(--warning-light); color: var(--warning); }
-  .p-medium { background: var(--accent-light); color: var(--accent); }
-  .p-low { background: var(--success-light); color: var(--success); }
-
-  /* DIVIDER */
-  .divider { height: 1px; background: var(--border); margin: 32px 0; }
-
-  /* FOOTER */
-  .doc-footer {
-    background: var(--primary);
-    color: white;
-    padding: 32px 48px;
-    text-align: center;
-    font-size: 13px;
-    opacity: 0.9;
-  }
-
-  /* FADE ANIMATION */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-
-  /* HORIZONTAL SCROLL CONTAINERS */
-  .scroll-wrapper {
-    position: relative;
-    overflow: hidden;
-    border-radius: 8px;
-  }
-  .scroll-container {
-    overflow-x: auto;
-    overflow-y: visible;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
-    padding-bottom: 8px;
-  }
-  .scroll-container::-webkit-scrollbar {
-    height: 5px;
-  }
-  .scroll-container::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .scroll-container::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 99px;
-  }
-  .scroll-container::-webkit-scrollbar-thumb:hover {
-    background: var(--text-muted);
-  }
-  /* Fade hint on the right edge when scrollable */
-  .scroll-wrapper::after {
-    content: '';
-    position: absolute;
-    top: 0; right: 0;
-    width: 48px;
-    height: calc(100% - 8px);
-    background: linear-gradient(to right, transparent, rgba(255,255,255,0.92));
-    pointer-events: none;
-    border-radius: 0 8px 8px 0;
-    opacity: 1;
-    transition: opacity 0.3s;
-  }
-  .scroll-wrapper.scrolled-end::after {
-    opacity: 0;
-  }
-  /* Scroll hint label */
-  .scroll-hint {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-    user-select: none;
-  }
-  .scroll-hint svg {
-    flex-shrink: 0;
-  }
-  /* Ensure journey table never collapses columns */
-  .journey-table {
-    min-width: 860px;
-  }
-  /* Ensure process steps row never wraps */
-  .steps-row {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    gap: 0;
-    min-width: 820px;
-  }
-
-  /* PRINT & RESPONSIVE */
-  @media (max-width: 900px) {
-    .persona-grid { grid-template-columns: 1fr; }
-    .ia-blocks { grid-template-columns: 1fr; }
-    .copy-grid { grid-template-columns: 1fr; }
-    .insight-grid { grid-template-columns: 1fr; }
-    .a11y-grid { grid-template-columns: repeat(2, 1fr); }
-    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
-    .container { padding: 24px; }
-    .doc-header { padding: 36px 24px; }
-    .toc { padding: 0 24px; }
-  }
-</style>
+<link rel="stylesheet" href="orto-care-styles.css">
 </head>
 <body>
 
@@ -1148,7 +518,11 @@
       <span class="block-badge">NAV</span>
       <span class="wireframe-title">Навигация (sticky header)</span>
     </div>
+      <div class="scroll-hint" style="margin-bottom:6px;margin-top:4px">↔ Прокрутите вправо для просмотра</div>
+    <div class="scroll-wrapper" data-scroll-id="wf-1">
+    <div class="scroll-container" id="wf-1" style="min-width:0">
     <div class="wireframe-box">
+
       <div class="wf-row">
         <div class="wf-element" style="flex:0 0 120px;flex-direction:column;align-items:flex-start;gap:2px">
           <span style="font-size:13px;font-weight:800;color:var(--primary)">Orto-Care</span>
@@ -1163,6 +537,8 @@
         <div class="wf-element accent-bg" style="flex:0 0 auto;padding:8px 16px;font-size:12px;font-weight:600">Найти точку →</div>
       </div>
     </div>
+    </div><!-- /scroll-container -->
+    </div><!-- /scroll-wrapper -->
     <div class="annotation-list">
       <div class="annotation good">
         <div class="ann-icon">✅</div>
@@ -1183,7 +559,11 @@
       <span class="block-badge">БЛОК 1</span>
       <span class="wireframe-title">Hero — захват за 10 секунд</span>
     </div>
+      <div class="scroll-hint" style="margin-bottom:6px;margin-top:4px">↔ Прокрутите вправо для просмотра</div>
+    <div class="scroll-wrapper" data-scroll-id="wf-2">
+    <div class="scroll-container" id="wf-2" style="min-width:0">
     <div class="wireframe-box">
+
       <div class="wf-row">
         <div class="wf-element half" style="flex-direction:column;align-items:flex-start;padding:20px;min-height:200px;gap:10px">
           <div style="font-size:10px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px">H1</div>
@@ -1220,6 +600,8 @@
         </div>
       </div>
     </div>
+    </div><!-- /scroll-container -->
+    </div><!-- /scroll-wrapper -->
     <div class="annotation-list">
       <div class="annotation good">
         <div class="ann-icon">✅</div>
@@ -1244,7 +626,11 @@
       <span class="block-badge">БЛОК 2</span>
       <span class="wireframe-title">Боли рынка — разрушаем доверие к «обычным»</span>
     </div>
+      <div class="scroll-hint" style="margin-bottom:6px;margin-top:4px">↔ Прокрутите вправо для просмотра</div>
+    <div class="scroll-wrapper" data-scroll-id="wf-3">
+    <div class="scroll-container" id="wf-3" style="min-width:0">
     <div class="wireframe-box" style="background:var(--primary)">
+
       <div class="wf-row">
         <div class="wf-element full heading" style="justify-content:center;background:transparent;border:none;color:white;font-size:18px;flex-direction:column;gap:8px">
           <span>Большинство «индивидуальных» стелек — не такие уж индивидуальные</span>
@@ -1290,6 +676,8 @@
         </div>
       </div>
     </div>
+    </div><!-- /scroll-container -->
+    </div><!-- /scroll-wrapper -->
     <div class="annotation-list">
       <div class="annotation good">
         <div class="ann-icon">✅</div>
@@ -1314,7 +702,11 @@
       <span class="block-badge">БЛОК 3</span>
       <span class="wireframe-title">Технология — покажем как никто не показывал</span>
     </div>
+      <div class="scroll-hint" style="margin-bottom:6px;margin-top:4px">↔ Прокрутите вправо для просмотра</div>
+    <div class="scroll-wrapper" data-scroll-id="wf-4">
+    <div class="scroll-container" id="wf-4" style="min-width:0">
     <div class="wireframe-box">
+
       <div class="wf-row">
         <div class="wf-element full heading" style="justify-content:center;flex-direction:column;gap:6px">
           <span style="font-size:18px">Покажем вашу стопу так, как её никто раньше не показывал</span>
@@ -1341,6 +733,8 @@
         </div>
       </div>
     </div>
+    </div><!-- /scroll-container -->
+    </div><!-- /scroll-wrapper -->
     <div class="annotation-list">
       <div class="annotation good">
         <div class="ann-icon">✅</div>
@@ -1361,7 +755,11 @@
       <span class="block-badge">БЛОК 4</span>
       <span class="wireframe-title">До и После — делаем невидимое видимым</span>
     </div>
+      <div class="scroll-hint" style="margin-bottom:6px;margin-top:4px">↔ Прокрутите вправо для просмотра</div>
+    <div class="scroll-wrapper" data-scroll-id="wf-5">
+    <div class="scroll-container" id="wf-5" style="min-width:0">
     <div class="wireframe-box">
+
       <div class="wf-row">
         <div class="wf-element full heading" style="justify-content:center;flex-direction:column;gap:6px">
           <span style="font-size:18px">Вот почему к вечеру болит пятка — и как это исправить</span>
@@ -1386,6 +784,8 @@
         </div>
       </div>
     </div>
+    </div><!-- /scroll-container -->
+    </div><!-- /scroll-wrapper -->
     <div class="annotation-list">
       <div class="annotation good">
         <div class="ann-icon">✅</div>
@@ -1410,7 +810,11 @@
       <span class="block-badge">БЛОК 5</span>
       <span class="wireframe-title">Как создаётся — скорость как технология</span>
     </div>
+      <div class="scroll-hint" style="margin-bottom:6px;margin-top:4px">↔ Прокрутите вправо для просмотра</div>
+    <div class="scroll-wrapper" data-scroll-id="wf-6">
+    <div class="scroll-container" id="wf-6" style="min-width:0">
     <div class="wireframe-box">
+
       <div class="wf-row">
         <div class="wf-element full heading" style="justify-content:center;flex-direction:column;gap:6px">
           <span style="font-size:18px">От сканирования до стельки — 3 дня. Вот каждый шаг.</span>
@@ -1465,6 +869,8 @@
         </div>
       </div>
     </div>
+    </div><!-- /scroll-container -->
+    </div><!-- /scroll-wrapper -->
     <div class="annotation-list">
       <div class="annotation good">
         <div class="ann-icon">✅</div>
@@ -1493,7 +899,11 @@
       <span class="block-badge">БЛОК 6</span>
       <span class="wireframe-title">Из чего сделано — поднимаем воспринимаемую ценность</span>
     </div>
+      <div class="scroll-hint" style="margin-bottom:6px;margin-top:4px">↔ Прокрутите вправо для просмотра</div>
+    <div class="scroll-wrapper" data-scroll-id="wf-7">
+    <div class="scroll-container" id="wf-7" style="min-width:0">
     <div class="wireframe-box">
+
       <div class="wf-row">
         <div class="wf-element full heading" style="justify-content:center;flex-direction:column;gap:6px">
           <span style="font-size:18px">Мягкость там, где нужна мягкость. Жёсткость там, где нужна жёсткость. В одной стельке.</span>
@@ -1538,6 +948,8 @@
         </div>
       </div>
     </div>
+    </div><!-- /scroll-container -->
+    </div><!-- /scroll-wrapper -->
     <div class="annotation-list">
       <div class="annotation good">
         <div class="ann-icon">✅</div>
@@ -1562,7 +974,11 @@
       <span class="block-badge">БЛОК 7</span>
       <span class="wireframe-title">Кому подходит — самоидентификация без давления</span>
     </div>
+      <div class="scroll-hint" style="margin-bottom:6px;margin-top:4px">↔ Прокрутите вправо для просмотра</div>
+    <div class="scroll-wrapper" data-scroll-id="wf-8">
+    <div class="scroll-container" id="wf-8" style="min-width:0">
     <div class="wireframe-box">
+
       <div class="wf-row">
         <div class="wf-element full heading" style="justify-content:center;flex-direction:column;gap:6px">
           <span style="font-size:18px">Найдите своё</span>
@@ -1599,6 +1015,8 @@
         </div>
       </div>
     </div>
+    </div><!-- /scroll-container -->
+    </div><!-- /scroll-wrapper -->
     <div class="annotation-list">
       <div class="annotation good">
         <div class="ann-icon">✅</div>
@@ -1619,7 +1037,11 @@
       <span class="block-badge">БЛОК 8</span>
       <span class="wireframe-title">Вопросы и ответы — снимаем тревогу, управляем ожиданиями</span>
     </div>
+      <div class="scroll-hint" style="margin-bottom:6px;margin-top:4px">↔ Прокрутите вправо для просмотра</div>
+    <div class="scroll-wrapper" data-scroll-id="wf-9">
+    <div class="scroll-container" id="wf-9" style="min-width:0">
     <div class="wireframe-box">
+
       <div class="wf-row">
         <div class="wf-element full heading" style="justify-content:center">Честные ответы на главные вопросы</div>
       </div>
@@ -1675,6 +1097,8 @@
         </div>
       </div>
     </div>
+    </div><!-- /scroll-container -->
+    </div><!-- /scroll-wrapper -->
     <div class="annotation-list">
       <div class="annotation good">
         <div class="ann-icon">✅</div>
@@ -1699,7 +1123,11 @@
       <span class="block-badge">БЛОК 9</span>
       <span class="wireframe-title">Карта точек + финальный CTA — конвертируем в офлайн</span>
     </div>
+      <div class="scroll-hint" style="margin-bottom:6px;margin-top:4px">↔ Прокрутите вправо для просмотра</div>
+    <div class="scroll-wrapper" data-scroll-id="wf-10">
+    <div class="scroll-container" id="wf-10" style="min-width:0">
     <div class="wireframe-box" style="background:var(--primary)">
+
       <div class="wf-row">
         <div class="wf-element full heading" style="justify-content:center;background:transparent;border:none;color:white;font-size:20px;flex-direction:column;gap:8px">
           <span>Начните с 15 минут</span>
@@ -1745,6 +1173,8 @@
         <span style="font-size:12px;color:rgba(255,255,255,0.6)">⚡ Готово за 3 дня</span>
       </div>
     </div>
+    </div><!-- /scroll-container -->
+    </div><!-- /scroll-wrapper -->
     <div class="annotation-list">
       <div class="annotation good">
         <div class="ann-icon">✅</div>
@@ -1769,7 +1199,11 @@
       <span class="block-badge">ФУТЕР</span>
       <span class="wireframe-title">Footer — навигация, контакты, правовые ссылки</span>
     </div>
+      <div class="scroll-hint" style="margin-bottom:6px;margin-top:4px">↔ Прокрутите вправо для просмотра</div>
+    <div class="scroll-wrapper" data-scroll-id="wf-11">
+    <div class="scroll-container" id="wf-11" style="min-width:0">
     <div class="wireframe-box">
+
       <div class="wf-row">
         <div class="wf-element third" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px">
           <span style="font-size:14px;font-weight:800;color:var(--primary)">Orto-Care</span>
@@ -1797,12 +1231,17 @@
         <span style="font-size:11px;color:var(--text-muted)">Политика конфиденциальности · Условия использования</span>
       </div>
     </div>
+    </div><!-- /scroll-container -->
+    </div><!-- /scroll-wrapper -->
   </div>
 
   <!-- SUMMARY TABLE -->
   <div style="margin-top:32px;padding:24px;background:var(--neutral);border-radius:12px;border:1px solid var(--border)">
     <h3 style="font-size:14px;font-weight:700;color:var(--primary);margin-bottom:16px;text-transform:uppercase;letter-spacing:0.5px">Итоговая структура — одним взглядом</h3>
-    <table style="width:100%;border-collapse:collapse;font-size:13px">
+    <div class="scroll-hint">↔ Прокрутите вправо для просмотра</div>
+    <div class="scroll-wrapper" data-scroll-id="summary-scroll">
+    <div class="scroll-container" id="summary-scroll">
+    <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:600px">
       <thead>
         <tr style="background:var(--primary);color:white">
           <th style="padding:10px 14px;text-align:left;border-radius:6px 0 0 0">#</th>
@@ -1824,6 +1263,8 @@
         <tr><td style="padding:10px 14px">9</td><td style="padding:10px 14px">Карта + CTA</td><td style="padding:10px 14px">Конвертировать в офлайн-визит</td><td style="padding:10px 14px;font-weight:600">«Начните с 15 минут»</td></tr>
       </tbody>
     </table>
+    </div><!-- /scroll-container -->
+    </div><!-- /scroll-wrapper -->
   </div>
 
 </section>
@@ -2141,7 +1582,10 @@
     </div>
   </div>
 
-  <table class="priority-table">
+  <div class="scroll-hint">↔ Прокрутите вправо для просмотра</div>
+  <div class="scroll-wrapper" data-scroll-id="priority-scroll">
+  <div class="scroll-container" id="priority-scroll">
+  <table class="priority-table" style="min-width:640px">
     <thead>
       <tr>
         <th>Приоритет</th>
@@ -2213,6 +1657,8 @@
       </tr>
     </tbody>
   </table>
+  </div><!-- /scroll-container -->
+  </div><!-- /scroll-wrapper -->
 
   <div style="margin-top:24px;padding:20px;background:var(--neutral);border-radius:12px;border:1px solid var(--border)">
     <h4 style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px">⚠️ Артефакты, без которых запуск нецелесообразен</h4>
